@@ -1,7 +1,5 @@
-name: Helion Code Engine
-description: A description of Helion Code Engine
+name: HelionCodeEngine
+description: |
+  A description of Helion Code Engine.
 version: 1.0
-category: HDP
-maintainer: Adam Sheldon
-license: HP
-projectURL: https://github.com/hpcloud/Helion-CI.git
+category: Database

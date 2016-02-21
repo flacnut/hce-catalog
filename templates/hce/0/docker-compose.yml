@@ -1,0 +1,66 @@
+hce-mysql:
+  restart: always
+  image: helioncf/hce-api:rancher-db
+
+hce-rabbitmq:
+  restart: always
+  image: rabbitmq:3.6
+  environment:
+    RABBITMQ_DEFAULT_USER: "admin"
+    RABBITMQ_DEFAULT_PASS: "password"
+    RABBITMQ_ERLANG_COOKIE: "ERLANGCOOKIESECRET"
+
+hce-api:
+  restart: always
+  image: helioncf/hce-api:rancher
+  links:
+    - hce-mysql:hce-mysql
+    - hce-rabbitmq:hce-rabbitmq
+  ports:
+    - 3001:3001
+
+hce-web:
+  restart: always
+  image: helioncf/hce-web:rancher
+  environment:
+    PORT: "80"
+  links:
+    - hce-api:hce-api
+  ports:
+    - 80:80
+
+hce-scheduler:
+  restart: always
+  image: helioncf/hce-worker:rancher
+  environment:
+    workerType: "BuildManager"
+  links:
+    - hce-api:hce-api
+    - hce-rabbitmq:hce-rabbitmq
+
+hce-builder:
+  restart: always
+  image: helioncf/hce-worker:rancher
+  environment:
+    workerType: "Build"
+  links:
+    - hce-api:hce-api
+    - hce-rabbitmq:hce-rabbitmq
+
+hce-tester:
+  restart: always
+  image: helioncf/hce-worker:rancher
+  environment:
+    workerType: "Test"
+  links:
+    - hce-api:hce-api
+    - hce-rabbitmq:hce-rabbitmq
+
+hce-deployer:
+  restart: always
+  image: helioncf/hce-worker:rancher
+  environment:
+    workerType: "Deploy"
+  links:
+    - hce-api:hce-api
+    - hce-rabbitmq:hce-rabbitmq

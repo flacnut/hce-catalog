@@ -1,7 +1,5 @@
-.catalog
+.catalog:
   name: "Helion Code Engine"
   version: "1.0"
-  description: "A description of Helion Code Engine"
-  uuid: B6B6255E-384A-4D3A-806F-991B6E2ED088-0
-  minimum_rancher_version: "v0.46.0"
-  questions: #Used to request user input for configuration options
+  description: "Helion Build Pipeline Tool"
+  minimum_rancher_version: v0.46.0
